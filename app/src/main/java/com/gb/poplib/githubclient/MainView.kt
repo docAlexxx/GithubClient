@@ -1,5 +1,10 @@
 package com.gb.poplib.githubclient
 
 interface MainView {
-    fun setButtonText(index: Int, text: String)
+    fun setTextButtonOne(counter: String)
+
+    fun setTextButtonTwo(counter: String)
+
+    fun setTextButtonThree(counter: String)
+
 }

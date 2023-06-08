@@ -1,37 +1,46 @@
 package com.gb.poplib.githubclient
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.gb.poplib.githubclient.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity(), MainView {
-    private var vb: ActivityMainBinding? = null
-    val presenter = MainPresenter(this)
-
-    val counters = mutableListOf(0, 0, 0)
+    private lateinit var vb: ActivityMainBinding
+    private lateinit var presenter: MainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         vb = ActivityMainBinding.inflate(layoutInflater)
-
         setContentView(vb?.root)
 
-        val listener = View.OnClickListener {
-            presenter.counterClick(it.id)
-        }
+        initPresenter()
 
-        vb?.btnCounter1?.setOnClickListener(listener)
-        vb?.btnCounter2?.setOnClickListener(listener)
-        vb?.btnCounter3?.setOnClickListener(listener)
+        with(vb) {
+            btnCounter1?.setOnClickListener {
+                presenter.onButtonOneClick()
+            }
+            btnCounter2?.setOnClickListener {
+                presenter.onButtonTwoClick()
+            }
+            btnCounter3?.setOnClickListener {
+                presenter.onButtonThreeClick()
+            }
+        }
     }
 
-    override fun setButtonText(index: Int, text: String) {
-        when(index) {
-            0 -> vb?.btnCounter1?.text = text
-            1 -> vb?.btnCounter2?.text = text
-            2 -> vb?.btnCounter3?.text = text
-        }
+    override fun setTextButtonOne(text: String) {
+        vb.btnCounter1?.text = text
+    }
+
+    override fun setTextButtonTwo(text: String) {
+        vb.btnCounter2?.text = text
+    }
+
+    override fun setTextButtonThree(text: String) {
+        vb.btnCounter3?.text = text
+    }
+
+    private fun initPresenter() {
+        presenter = MainPresenter(this)
     }
 }
