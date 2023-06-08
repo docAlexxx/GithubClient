@@ -4,14 +4,14 @@ class MainPresenter(val view: MainView) {
     val model = CountersModel()
 
     fun onButtonOneClick() {
-        view.setTextButtonOne(model.nextItem(0).toString())
+        view.setTextButtonOne(model.nextItem(BUTTON_ONE).toString())
     }
 
     fun onButtonTwoClick() {
-        view.setTextButtonTwo(model.nextItem(1).toString())
+        view.setTextButtonTwo(model.nextItem(BUTTON_TWO).toString())
     }
 
     fun onButtonThreeClick() {
-        view.setTextButtonThree(model.nextItem(2).toString())
+        view.setTextButtonThree(model.nextItem(BUTTON_THREE).toString())
     }
 }

@@ -1,5 +1,5 @@
 package com.gb.poplib.githubclient
 
-const val ITEM_ONE = 0
-const val ITEM_TWO = 1
-const val ITEM_THREE = 2
+const val BUTTON_ONE = 0
+const val BUTTON_TWO = 1
+const val BUTTON_THREE = 2
