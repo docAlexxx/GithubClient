@@ -1,4 +1,4 @@
-package com.gb.poplib.githubclient
+package com.gb.poplib.githubclient.mvp.view
 
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy

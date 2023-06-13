@@ -1,4 +1,4 @@
-package com.gb.poplib.githubclient
+package com.gb.poplib.githubclient.ui
 
 class CountersModel {
 

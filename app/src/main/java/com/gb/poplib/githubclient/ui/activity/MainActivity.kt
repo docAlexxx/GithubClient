@@ -1,8 +1,10 @@
-package com.gb.poplib.githubclient
+package com.gb.poplib.githubclient.ui.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.gb.poplib.githubclient.ui.CountersModel
+import com.gb.poplib.githubclient.mvp.presenter.MainPresenter
 import com.gb.poplib.githubclient.databinding.ActivityMainBinding
+import com.gb.poplib.githubclient.mvp.view.MainView
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 

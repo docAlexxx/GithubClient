@@ -1,5 +1,10 @@
-package com.gb.poplib.githubclient
+package com.gb.poplib.githubclient.mvp.presenter
 
+import com.gb.poplib.githubclient.BUTTON_ONE
+import com.gb.poplib.githubclient.BUTTON_THREE
+import com.gb.poplib.githubclient.BUTTON_TWO
+import com.gb.poplib.githubclient.mvp.view.MainView
+import com.gb.poplib.githubclient.ui.CountersModel
 import moxy.MvpPresenter
 
 class MainPresenter(val model: CountersModel):MvpPresenter<MainView>() {
