@@ -3,17 +3,17 @@ package com.gb.poplib.githubclient
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gb.poplib.githubclient.databinding.ActivityMainBinding
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
-class MainActivity : AppCompatActivity(), MainView {
+class MainActivity : MvpAppCompatActivity(), MainView {
     private lateinit var vb: ActivityMainBinding
-    private lateinit var presenter: MainPresenter
+    private val presenter by moxyPresenter { MainPresenter(CountersModel()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
-
-        initPresenter()
 
         with(vb) {
             btnCounter1?.setOnClickListener {
@@ -40,7 +40,5 @@ class MainActivity : AppCompatActivity(), MainView {
         vb.btnCounter3?.text = text
     }
 
-    private fun initPresenter() {
-        presenter = MainPresenter(this)
-    }
+
 }
