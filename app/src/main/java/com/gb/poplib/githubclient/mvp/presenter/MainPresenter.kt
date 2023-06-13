@@ -1,24 +1,42 @@
 package com.gb.poplib.githubclient.mvp.presenter
 
-import com.gb.poplib.githubclient.BUTTON_ONE
-import com.gb.poplib.githubclient.BUTTON_THREE
-import com.gb.poplib.githubclient.BUTTON_TWO
+import com.gb.poplib.githubclient.mvp.model.GitHubUserRepo
+import com.gb.poplib.githubclient.mvp.model.GithubUser
+import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
 import com.gb.poplib.githubclient.mvp.view.MainView
-import com.gb.poplib.githubclient.ui.CountersModel
+import com.gb.poplib.githubclient.mvp.view.list.UserItemView
 import moxy.MvpPresenter
 
-class MainPresenter(val model: CountersModel):MvpPresenter<MainView>() {
+class MainPresenter(val usersRepo: GitHubUserRepo) : MvpPresenter<MainView>() {
 
+    class UsersListPresenter : UserListPresenter {
+        val users = mutableListOf<GithubUser>()
 
-    fun onButtonOneClick() {
-        viewState.setTextButtonOne(model.nextItem(BUTTON_ONE).toString())
+        override var itemClickListener: ((UserItemView) -> Unit)? = null
+
+        override fun bindView(view: UserItemView) {
+            val user = users[view.index]
+            view.setLogin(user.login)
+        }
+
+        override fun getCount() = users.size
+
     }
 
-    fun onButtonTwoClick() {
-        viewState.setTextButtonTwo(model.nextItem(BUTTON_TWO).toString())
+    val usersListPresenter = UsersListPresenter()
+
+    override fun onFirstViewAttach() {
+        super.onFirstViewAttach()
+        viewState.init()
+        loadData()
+        usersListPresenter.itemClickListener = { itemView ->
+            // TODO
+        }
     }
 
-    fun onButtonThreeClick() {
-        viewState.setTextButtonThree(model.nextItem(BUTTON_THREE).toString())
+    fun loadData() {
+        val users = usersRepo.getUsers()
+        usersListPresenter.users.addAll(users)
+        viewState.updateList()
     }
 }

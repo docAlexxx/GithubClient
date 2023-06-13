@@ -1,45 +1,35 @@
 package com.gb.poplib.githubclient.ui.activity
 
 import android.os.Bundle
-import com.gb.poplib.githubclient.ui.CountersModel
-import com.gb.poplib.githubclient.mvp.presenter.MainPresenter
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gb.poplib.githubclient.databinding.ActivityMainBinding
+import com.gb.poplib.githubclient.mvp.model.GitHubUserRepo
+import com.gb.poplib.githubclient.mvp.presenter.MainPresenter
 import com.gb.poplib.githubclient.mvp.view.MainView
+import com.gb.poplib.githubclient.ui.adapter.UserAdapter
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 
 class MainActivity : MvpAppCompatActivity(), MainView {
     private lateinit var vb: ActivityMainBinding
-    private val presenter by moxyPresenter { MainPresenter(CountersModel()) }
+    private val presenter by moxyPresenter { MainPresenter(GitHubUserRepo()) }
+    private var adapter: UserAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
 
-        with(vb) {
-            btnCounter1?.setOnClickListener {
-                presenter.onButtonOneClick()
-            }
-            btnCounter2?.setOnClickListener {
-                presenter.onButtonTwoClick()
-            }
-            btnCounter3?.setOnClickListener {
-                presenter.onButtonThreeClick()
-            }
-        }
     }
 
-    override fun setTextButtonOne(text: String) {
-        vb.btnCounter1?.text = text
+    override fun init() {
+        vb?.usersRv?.layoutManager = LinearLayoutManager(this)
+        adapter = UserAdapter(presenter.usersListPresenter)
+        vb?.usersRv?.adapter = adapter
     }
 
-    override fun setTextButtonTwo(text: String) {
-        vb.btnCounter2?.text = text
-    }
-
-    override fun setTextButtonThree(text: String) {
-        vb.btnCounter3?.text = text
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
     }
 
 
