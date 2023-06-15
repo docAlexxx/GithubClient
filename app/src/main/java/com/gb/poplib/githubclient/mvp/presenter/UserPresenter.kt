@@ -5,10 +5,12 @@ import com.gb.poplib.githubclient.mvp.model.GithubUser
 import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
 import com.gb.poplib.githubclient.mvp.view.list.UserItemView
+import com.gb.poplib.githubclient.navigation.Screens
 import com.github.terrakok.cicerone.Router
 import moxy.MvpPresenter
 
-class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router) : MvpPresenter<UserView>() {
+class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router, val screens: Screens) :
+    MvpPresenter<UserView>() {
     class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
 
@@ -20,7 +22,6 @@ class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router) : MvpPres
         }
 
         override fun getCount() = users.size
-
     }
 
     val usersListPresenter = UsersListPresenter()
@@ -30,7 +31,8 @@ class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router) : MvpPres
         viewState.init()
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
-            // TODO
+            val name = usersListPresenter.users[itemView.index].login
+            router.replaceScreen(screens.userItem(name))
         }
     }
 

@@ -37,4 +37,6 @@ class UserAdapter(val presenter: UserListPresenter) :
             userLoginTv.text = login
         }
     }
+
+
 }

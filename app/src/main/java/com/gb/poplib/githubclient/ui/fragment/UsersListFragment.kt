@@ -9,12 +9,13 @@ import com.gb.poplib.githubclient.databinding.FragmentUsersListBinding
 import com.gb.poplib.githubclient.mvp.model.GitHubUserRepo
 import com.gb.poplib.githubclient.mvp.presenter.UserPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
+import com.gb.poplib.githubclient.navigation.ToolScreens
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
 import com.gb.poplib.githubclient.ui.adapter.UserAdapter
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserFragment: MvpAppCompatFragment(),UserView, BackButtonListener {
+class UsersListFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     private var _binding: FragmentUsersListBinding? = null
     private val binding
         get() = _binding!!
@@ -22,14 +23,18 @@ class UserFragment: MvpAppCompatFragment(),UserView, BackButtonListener {
     var adapter: UserAdapter? = null
 
     val presenter: UserPresenter by moxyPresenter {
-        UserPresenter(GitHubUserRepo(), App.instance.router)
+        UserPresenter(GitHubUserRepo(), App.instance.router, ToolScreens())
     }
 
     companion object {
-        fun newInstance() = UserFragment()
+        fun newInstance() = UsersListFragment()
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
         FragmentUsersListBinding.inflate(inflater, container, false).also {
             _binding = it
         }.root
@@ -49,5 +54,5 @@ class UserFragment: MvpAppCompatFragment(),UserView, BackButtonListener {
         adapter?.notifyDataSetChanged()
     }
 
-    override fun backPressed()= presenter.backPressed()
+    override fun backPressed() = presenter.backPressed()
 }
