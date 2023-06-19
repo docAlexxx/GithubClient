@@ -7,6 +7,7 @@ import com.gb.poplib.githubclient.mvp.view.UserView
 import com.gb.poplib.githubclient.mvp.view.list.UserItemView
 import com.gb.poplib.githubclient.navigation.Screens
 import com.github.terrakok.cicerone.Router
+import io.reactivex.rxjava3.core.Observable
 import moxy.MvpPresenter
 
 class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router, val screens: Screens) :
@@ -16,9 +17,19 @@ class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router, val scree
 
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
+        fun fromIterable(): Observable<GithubUser> {
+            return Observable.fromIterable(mutableListOf<GithubUser>())
+        }
+
         override fun bindView(view: UserItemView) {
-            val user = users[view.index]
-            view.setLogin(user.login)
+            Observable.just(users[view.index])
+                .map { it.login }
+                .subscribe(
+                    { log ->
+                        view.setLogin(log)
+                        println("onNext: $log")
+                    }
+                )
         }
 
         override fun getCount() = users.size
@@ -37,8 +48,13 @@ class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router, val scree
     }
 
     fun loadData() {
-        val users = usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+        Observable.fromIterable(usersRepo.getUsers())
+            .subscribe(
+                { user ->
+                    usersListPresenter.users.add(user)
+                    println("onNextadd: $user")
+                }
+            )
         viewState.updateList()
     }
 
