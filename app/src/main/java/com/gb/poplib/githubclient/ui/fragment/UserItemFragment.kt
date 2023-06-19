@@ -41,6 +41,7 @@ class UserItemFragment(val name: String) : MvpAppCompatFragment(), MainView, Bac
 
     override fun onDestroyView() {
         super.onDestroyView()
+
         _binding = null
     }
 
