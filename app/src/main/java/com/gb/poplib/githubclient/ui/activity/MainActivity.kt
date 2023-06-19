@@ -7,6 +7,7 @@ import com.gb.poplib.githubclient.databinding.ActivityMainBinding
 import com.gb.poplib.githubclient.mvp.presenter.MainPresenter
 import com.gb.poplib.githubclient.mvp.view.MainView
 import com.gb.poplib.githubclient.navigation.ToolScreens
+import com.gb.poplib.githubclient.rxjava.Operators
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
@@ -20,6 +21,9 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
+
+        //Creation().exec()
+        Operators().exec()
     }
 
     override fun onResumeFragments() {
