@@ -1,35 +1,32 @@
 package com.gb.poplib.githubclient.mvp.presenter
 
-import com.gb.poplib.githubclient.mvp.model.GitHubUserRepo
-import com.gb.poplib.githubclient.mvp.model.GithubUser
+import com.gb.poplib.githubclient.mvp.model.entity.GitHubUserRepo
+import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
+import com.gb.poplib.githubclient.mvp.model.repo.IGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
 import com.gb.poplib.githubclient.mvp.view.list.UserItemView
 import com.gb.poplib.githubclient.navigation.Screens
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 
-class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router, val screens: Screens) :
+class UserPresenter(val uiScheduler: Scheduler, val usersRepo: IGithubUsersRepo, val router: Router, val screens: Screens) :
     MvpPresenter<UserView>() {
+    private var disposable: Disposable? = null
     class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
 
         override var itemClickListener: ((UserItemView) -> Unit)? = null
 
-        fun fromIterable(): Observable<GithubUser> {
-            return Observable.fromIterable(mutableListOf<GithubUser>())
-        }
-
         override fun bindView(view: UserItemView) {
-            Observable.just(users[view.index])
-                .map { it.login }
-                .subscribe(
-                    { log ->
-                        view.setLogin(log)
-                        println("onNext: $log")
-                    }
-                )
+            val user = users[view.index]
+            user.login.let {
+                view.setLogin(it)
+            }
+
         }
 
         override fun getCount() = users.size
@@ -48,18 +45,22 @@ class UserPresenter(val usersRepo: GitHubUserRepo, val router: Router, val scree
     }
 
     fun loadData() {
-        Observable.fromIterable(usersRepo.getUsers())
-            .subscribe(
-                { user ->
-                    usersListPresenter.users.add(user)
-                    println("onNextadd: $user")
-                }
-            )
-        viewState.updateList()
+        disposable = usersRepo.getUsers()
+            .observeOn(uiScheduler)
+            .subscribe({repos ->
+                usersListPresenter.users.clear()
+                usersListPresenter.users.addAll(repos)
+                viewState.updateList()
+            })
     }
 
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 }
