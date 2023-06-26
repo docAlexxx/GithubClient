@@ -45,17 +45,17 @@ class UserPresenter(
         viewState.init()
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
-            val name = usersListPresenter.users[itemView.index].login
-            router.replaceScreen(screens.userItem(name))
+            val user = usersListPresenter.users[itemView.index]
+            router.navigateTo(screens.userItem(user))
         }
     }
 
     fun loadData() {
         disposable = usersRepo.getUsers()
             .observeOn(uiScheduler)
-            .subscribe({ repos ->
+            .subscribe({ users ->
                 usersListPresenter.users.clear()
-                usersListPresenter.users.addAll(repos)
+                usersListPresenter.users.addAll(users)
                 viewState.updateList()
             })
     }

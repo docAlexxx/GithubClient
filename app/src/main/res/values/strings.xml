@@ -6,4 +6,5 @@
     <string name="counter_three">Счетчик 3</string>
     <string name="startCount">0</string>
     <string name="username_text">User Name</string>
+    <string name="repo_name">Repo name</string>
 </resources>

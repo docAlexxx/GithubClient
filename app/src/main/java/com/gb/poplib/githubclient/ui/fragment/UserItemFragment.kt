@@ -2,32 +2,47 @@ package com.gb.poplib.githubclient.ui.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.gb.poplib.githubclient.App
 import com.gb.poplib.githubclient.databinding.FragmentUserBinding
+import com.gb.poplib.githubclient.mvp.model.api.ApiHolder
+import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
+import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.UserItemPresenter
-import com.gb.poplib.githubclient.mvp.view.MainView
-import com.gb.poplib.githubclient.navigation.ToolScreens
+import com.gb.poplib.githubclient.mvp.view.RepoView
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
-import com.gb.poplib.githubclient.ui.adapter.UserAdapter
+import com.gb.poplib.githubclient.ui.adapter.RepoAdapter
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-class UserItemFragment(val name: String) : MvpAppCompatFragment(), MainView, BackButtonListener {
+class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
     private var _binding: FragmentUserBinding? = null
     private val binding
         get() = _binding!!
 
-    var adapter: UserAdapter? = null
+    var adapter: RepoAdapter? = null
+
 
     val presenter: UserItemPresenter by moxyPresenter {
-        UserItemPresenter(App.instance.router, ToolScreens())
+        val user = arguments?.getParcelable(USER) as GithubUser?
+        UserItemPresenter(
+            AndroidSchedulers.mainThread(),
+            RetrofitGithubUsersRepo(ApiHolder.api),
+            App.instance.router,
+            App.instance.screens,
+            user!!
+        )
     }
 
     companion object {
-        fun newInstance(text: String) = UserItemFragment(text)
-
+        const val USER = "USER"
+        fun newInstance(user: GithubUser) = UserItemFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(USER, user)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -41,16 +56,18 @@ class UserItemFragment(val name: String) : MvpAppCompatFragment(), MainView, Bac
 
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        with(_binding!!) {
-            userTv.text = name
+    override fun init(user: GithubUser) {
+        binding.reposRv?.layoutManager = LinearLayoutManager(context)
+        adapter = RepoAdapter(presenter.reposListPresenter)
+        binding.reposRv?.adapter = adapter
+        binding.userTv.text = user.login + "'s repos:"
+    }
 
-        }
+    override fun updateList() {
+        adapter?.notifyDataSetChanged()
     }
 
     override fun backPressed() = presenter.backPressed()
