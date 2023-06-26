@@ -2,13 +2,15 @@ package com.gb.poplib.githubclient.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.gb.poplib.githubclient.START_INDEX
 import com.gb.poplib.githubclient.databinding.UserItemBinding
 import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
+import com.gb.poplib.githubclient.mvp.view.IImageLoader
 import com.gb.poplib.githubclient.mvp.view.list.UserItemView
 
-class UserAdapter(val presenter: UserListPresenter) :
+class UserAdapter(val presenter: UserListPresenter, val imageLoader: IImageLoader<ImageView>) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
@@ -36,6 +38,12 @@ class UserAdapter(val presenter: UserListPresenter) :
         override fun setLogin(login: String) = with(vb) {
             userLoginTv.text = login
         }
+
+        override fun loadAvatar(url: String) {
+            imageLoader.loadInto(url, vb.avatarIv)
+        }
+
+
     }
 
 
