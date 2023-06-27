@@ -40,15 +40,17 @@ class UserItemPresenter(
 
     val reposListPresenter = ReposListPresenter()
 
-    override fun onFirstViewAttach() {
-        super.onFirstViewAttach()
-        viewState.init(user)
-        loadData()
-        // reposListPresenter.itemClickListener = { itemView ->
-        //     val name = reposListPresenter.repos[itemView.index].name
-        //  router.replaceScreen(screens.userItem(name))
-        // }
-    }
+        override fun onFirstViewAttach() {
+            super.onFirstViewAttach()
+            viewState.init(user)
+            loadData()
+
+            reposListPresenter.itemClickListener = { itemView ->
+                val repo = reposListPresenter.repos[itemView.index]
+                router.navigateTo(screens.repoItem(repo))
+            }
+
+        }
 
     fun loadData() {
         disposable = user.reposUrl?.let {
