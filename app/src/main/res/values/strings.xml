@@ -6,4 +6,10 @@
     <string name="counter_three">Счетчик 3</string>
     <string name="startCount">0</string>
     <string name="username_text">User Name</string>
+    <string name="repo_name">Repo name</string>
+    <string name="repo_item_name">Repo name</string>
+    <string name="language">language -</string>
+    <string name="forks_qty">forks qty -</string>
+    <string name="watchers_qty">watchers qty -</string>
+    <string name="empty_text">empty</string>
 </resources>

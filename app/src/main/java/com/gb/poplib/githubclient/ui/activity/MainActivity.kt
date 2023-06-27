@@ -23,7 +23,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
         setContentView(vb?.root)
 
         //Creation().exec()
-        Operators().exec()
+       // Operators().exec()
     }
 
     override fun onResumeFragments() {
