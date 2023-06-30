@@ -9,8 +9,8 @@ import com.gb.poplib.githubclient.databinding.FragmentUserBinding
 import com.gb.poplib.githubclient.mvp.model.api.ApiHolder
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
+import com.gb.poplib.githubclient.mvp.model.repo.cashe.RepoCashe
 import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo
-import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.UserItemPresenter
 import com.gb.poplib.githubclient.mvp.view.RepoView
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
@@ -31,7 +31,11 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
         val user = arguments?.getParcelable(USER) as GithubUser?
         UserItemPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubRepositoriesRepo(ApiHolder.api, App.networkStatus, Database.getInstance()),
+            RetrofitGithubRepositoriesRepo(
+                ApiHolder.api,
+                App.networkStatus,
+                RepoCashe(Database.getInstance())
+            ),
             App.instance.router,
             App.instance.screens,
             user!!

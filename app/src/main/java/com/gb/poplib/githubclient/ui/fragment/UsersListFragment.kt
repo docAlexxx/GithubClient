@@ -8,6 +8,7 @@ import com.gb.poplib.githubclient.App
 import com.gb.poplib.githubclient.databinding.FragmentUsersListBinding
 import com.gb.poplib.githubclient.mvp.model.api.ApiHolder
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
+import com.gb.poplib.githubclient.mvp.model.repo.cashe.UserCashe
 import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.UserPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
@@ -28,7 +29,11 @@ class UsersListFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     val presenter: UserPresenter by moxyPresenter {
         UserPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder.api, App.networkStatus, Database.getInstance()),
+            RetrofitGithubUsersRepo(
+                ApiHolder.api,
+                App.networkStatus,
+                UserCashe(Database.getInstance())
+            ),
             App.instance.router,
             App.instance.screens
         )
