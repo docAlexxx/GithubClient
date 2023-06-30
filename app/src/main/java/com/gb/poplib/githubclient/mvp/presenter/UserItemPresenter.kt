@@ -2,6 +2,7 @@ package com.gb.poplib.githubclient.mvp.presenter
 
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
 import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
+import com.gb.poplib.githubclient.mvp.model.repo.IGithubRepositoriesRepo
 import com.gb.poplib.githubclient.mvp.model.repo.IGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.list.RepoListPresenter
 import com.gb.poplib.githubclient.mvp.view.RepoView
@@ -14,7 +15,7 @@ import moxy.MvpPresenter
 
 class UserItemPresenter(
     val uiScheduler: Scheduler,
-    val usersRepo: IGithubUsersRepo,
+    val usersRepo: IGithubRepositoriesRepo,
     val router: Router,
     val screens: Screens,
     val user: GithubUser
@@ -54,12 +55,14 @@ class UserItemPresenter(
 
     fun loadData() {
         disposable = user.reposUrl?.let {
-            usersRepo.getRepos(it)
+            usersRepo.getRepositories(user)
                 .observeOn(uiScheduler)
                 .subscribe({ repos ->
                     reposListPresenter.repos.clear()
                     reposListPresenter.repos.addAll(repos)
                     viewState.updateList()
+                }, {
+                    println("Error: ${it.message}")
                 })
         }
     }

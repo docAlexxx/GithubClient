@@ -6,6 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserRepos(
+    @Expose val id: String,
     @Expose val name: String,
     @Expose val watchers: Int,
     @Expose val forks: Int,

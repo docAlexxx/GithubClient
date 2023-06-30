@@ -8,6 +8,8 @@ import com.gb.poplib.githubclient.App
 import com.gb.poplib.githubclient.databinding.FragmentUserBinding
 import com.gb.poplib.githubclient.mvp.model.api.ApiHolder
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
+import com.gb.poplib.githubclient.mvp.model.entity.room.Database
+import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo
 import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.UserItemPresenter
 import com.gb.poplib.githubclient.mvp.view.RepoView
@@ -29,7 +31,7 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
         val user = arguments?.getParcelable(USER) as GithubUser?
         UserItemPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder.api),
+            RetrofitGithubRepositoriesRepo(ApiHolder.api, App.networkStatus, Database.getInstance()),
             App.instance.router,
             App.instance.screens,
             user!!
