@@ -10,8 +10,6 @@ import com.gb.poplib.githubclient.mvp.presenter.UserPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
 import com.gb.poplib.githubclient.ui.adapter.UserAdapter
-import com.gb.poplib.githubclient.ui.image.GlideImageLoader
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -23,7 +21,7 @@ class UsersListFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     var adapter: UserAdapter? = null
 
     val presenter: UserPresenter by moxyPresenter {
-        UserPresenter(AndroidSchedulers.mainThread()).apply {
+        UserPresenter().apply {
             App.instance.appComponent.inject(this)
         }
 
@@ -49,7 +47,8 @@ class UsersListFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
 
     override fun init() {
         binding.usersRv?.layoutManager = LinearLayoutManager(context)
-        adapter = UserAdapter(presenter.usersListPresenter, GlideImageLoader())
+        adapter =
+            UserAdapter(presenter.usersListPresenter).apply { App.instance.appComponent.inject(this) }
         binding.usersRv?.adapter = adapter
     }
 
