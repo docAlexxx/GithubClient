@@ -9,9 +9,13 @@ import com.gb.poplib.githubclient.databinding.UserItemBinding
 import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
 import com.gb.poplib.githubclient.mvp.view.IImageLoader
 import com.gb.poplib.githubclient.mvp.view.list.UserItemView
+import javax.inject.Inject
 
-class UserAdapter(val presenter: UserListPresenter, val imageLoader: IImageLoader<ImageView>) :
+class UserAdapter(val presenter: UserListPresenter) :
     RecyclerView.Adapter<UserAdapter.UserViewHolder>() {
+
+    @Inject
+    lateinit var imageLoader: IImageLoader<ImageView>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         UserViewHolder(

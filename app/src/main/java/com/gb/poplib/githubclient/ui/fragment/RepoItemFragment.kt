@@ -8,7 +8,6 @@ import com.gb.poplib.githubclient.databinding.FragmentRepoBinding
 import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
 import com.gb.poplib.githubclient.mvp.presenter.RepoItemPresenter
 import com.gb.poplib.githubclient.mvp.view.RepoDetailsView
-import com.gb.poplib.githubclient.navigation.ToolScreens
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -20,7 +19,9 @@ class RepoItemFragment : MvpAppCompatFragment(), RepoDetailsView, BackButtonList
 
     val presenter: RepoItemPresenter by moxyPresenter {
         val repo = arguments?.getParcelable(REPO) as UserRepos?
-        RepoItemPresenter(App.instance.router, repo!!)
+        RepoItemPresenter(repo!!).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     companion object {
