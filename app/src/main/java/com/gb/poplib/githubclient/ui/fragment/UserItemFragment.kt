@@ -9,15 +9,19 @@ import com.gb.poplib.githubclient.databinding.FragmentUserBinding
 import com.gb.poplib.githubclient.mvp.model.api.ApiHolder
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
+import com.gb.poplib.githubclient.mvp.model.network.INetworkStatus
 import com.gb.poplib.githubclient.mvp.model.repo.cashe.RepoCashe
 import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo
 import com.gb.poplib.githubclient.mvp.presenter.UserItemPresenter
 import com.gb.poplib.githubclient.mvp.view.RepoView
+import com.gb.poplib.githubclient.navigation.Screens
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
 import com.gb.poplib.githubclient.ui.adapter.RepoAdapter
+import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
     private var _binding: FragmentUserBinding? = null
@@ -26,6 +30,14 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
 
     var adapter: RepoAdapter? = null
 
+    @Inject
+    lateinit var database: Database
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var screens: Screens
+    @Inject
+    lateinit var networkStatus: INetworkStatus
 
     val presenter: UserItemPresenter by moxyPresenter {
         val user = arguments?.getParcelable(USER) as GithubUser?
@@ -33,11 +45,11 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
             AndroidSchedulers.mainThread(),
             RetrofitGithubRepositoriesRepo(
                 ApiHolder.api,
-                App.networkStatus,
-                RepoCashe(Database.getInstance())
+                networkStatus,
+                RepoCashe(database)
             ),
-            App.instance.router,
-            App.instance.screens,
+            router,
+            screens,
             user!!
         )
     }
@@ -48,6 +60,7 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
             arguments = Bundle().apply {
                 putParcelable(USER, user)
             }
+            App.instance.appComponent.inject(this)
         }
     }
 

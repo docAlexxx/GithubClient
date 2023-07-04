@@ -10,15 +10,20 @@ import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 class UserPresenter(
-    val uiScheduler: Scheduler,
-    val usersRepo: IGithubUsersRepo,
-    val router: Router,
-    val screens: Screens
+    val uiScheduler: Scheduler
 ) :
     MvpPresenter<UserView>() {
     private var disposable: Disposable? = null
+
+    @Inject
+    lateinit var usersRepo: IGithubUsersRepo
+    @Inject
+    lateinit var router: Router
+    @Inject
+    lateinit var screens: Screens
 
     class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()

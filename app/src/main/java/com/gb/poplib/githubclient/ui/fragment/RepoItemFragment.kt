@@ -8,19 +8,23 @@ import com.gb.poplib.githubclient.databinding.FragmentRepoBinding
 import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
 import com.gb.poplib.githubclient.mvp.presenter.RepoItemPresenter
 import com.gb.poplib.githubclient.mvp.view.RepoDetailsView
-import com.gb.poplib.githubclient.navigation.ToolScreens
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
+import com.github.terrakok.cicerone.Router
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class RepoItemFragment : MvpAppCompatFragment(), RepoDetailsView, BackButtonListener {
     private var _binding: FragmentRepoBinding? = null
     private val binding
         get() = _binding!!
 
+    @Inject
+    lateinit var router: Router
+
     val presenter: RepoItemPresenter by moxyPresenter {
         val repo = arguments?.getParcelable(REPO) as UserRepos?
-        RepoItemPresenter(App.instance.router, repo!!)
+        RepoItemPresenter(router, repo!!)
     }
 
     companion object {
@@ -29,6 +33,7 @@ class RepoItemFragment : MvpAppCompatFragment(), RepoDetailsView, BackButtonList
             arguments = Bundle().apply {
                 putParcelable(REPO, repo)
             }
+            App.instance.appComponent.inject(this)
         }
     }
 
