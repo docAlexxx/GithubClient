@@ -1,27 +1,31 @@
-package com.gb.poplib.githubclient.di.modules
+package com.gb.poplib.githubclient.di.repo.modules
 
+import com.gb.poplib.githubclient.App
+import com.gb.poplib.githubclient.di.repo.RepoScope
 import com.gb.poplib.githubclient.mvp.model.api.IDataSource
+import com.gb.poplib.githubclient.mvp.model.entity.room.Database
 import com.gb.poplib.githubclient.mvp.model.network.INetworkStatus
 import com.gb.poplib.githubclient.mvp.model.repo.IGithubRepositoriesRepo
-import com.gb.poplib.githubclient.mvp.model.repo.IGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.model.repo.cashe.IRepoCashe
-import com.gb.poplib.githubclient.mvp.model.repo.cashe.IUserCashe
+import com.gb.poplib.githubclient.mvp.model.repo.cashe.RepoCashe
 import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo
-import com.gb.poplib.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class RepoModule {
 
-    @Singleton
     @Provides
-    fun usersRepo(api: IDataSource, networkStatus: INetworkStatus, cashe: IUserCashe)
-            : IGithubUsersRepo = RetrofitGithubUsersRepo(api, networkStatus, cashe)
+    fun repositoriesCache(database: Database): IRepoCashe {
+        return RepoCashe(database)
+    }
 
-    @Singleton
+    @RepoScope
     @Provides
     fun repositoriesRepo(api: IDataSource, networkStatus: INetworkStatus, cashe: IRepoCashe)
             : IGithubRepositoriesRepo = RetrofitGithubRepositoriesRepo(api, networkStatus, cashe)
+
+    @RepoScope
+    @Provides
+    open fun scopeContainer(app: App): IRepoScopeContainer = app
 }

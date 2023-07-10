@@ -1,5 +1,6 @@
 package com.gb.poplib.githubclient.mvp.presenter
 
+import com.gb.poplib.githubclient.di.repo.modules.IRepoScopeContainer
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
 import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
@@ -30,6 +31,8 @@ class UserItemPresenter(
     lateinit var usersRepo: IGithubRepositoriesRepo
     @Inject
     lateinit var database: Database
+    @Inject
+    lateinit var repoScopeContainer: IRepoScopeContainer
 
 
     class ReposListPresenter : RepoListPresenter {
@@ -82,6 +85,7 @@ class UserItemPresenter(
     }
 
     override fun onDestroy() {
+        repoScopeContainer.releaseRepoScope()
         super.onDestroy()
         disposable?.dispose()
     }

@@ -1,5 +1,6 @@
 package com.gb.poplib.githubclient.mvp.presenter
 
+import com.gb.poplib.githubclient.di.user.Modules.IUserScopeContainer
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
 import com.gb.poplib.githubclient.mvp.model.repo.IGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
@@ -24,7 +25,8 @@ class UserPresenter() :
     lateinit var screens: Screens
     @Inject
     lateinit var uiScheduler: Scheduler
-
+    @Inject
+    lateinit var userScopeContainer: IUserScopeContainer
 
     class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
@@ -72,6 +74,7 @@ class UserPresenter() :
     }
 
     override fun onDestroy() {
+        userScopeContainer.releaseUserScope()
         super.onDestroy()
         disposable?.dispose()
     }

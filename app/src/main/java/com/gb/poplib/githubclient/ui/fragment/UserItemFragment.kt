@@ -23,8 +23,8 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
 
     val presenter: UserItemPresenter by moxyPresenter {
         val user = arguments?.getParcelable(USER) as GithubUser?
-        UserItemPresenter( user!!).apply {
-            App.instance.appComponent.inject(this)
+        UserItemPresenter(user!!).apply {
+            App.instance.initRepoSubcomponent()?.inject(this)
         }
     }
 
@@ -34,7 +34,7 @@ class UserItemFragment : MvpAppCompatFragment(), RepoView, BackButtonListener {
             arguments = Bundle().apply {
                 putParcelable(USER, user)
             }
-                 }
+        }
     }
 
     override fun onCreateView(

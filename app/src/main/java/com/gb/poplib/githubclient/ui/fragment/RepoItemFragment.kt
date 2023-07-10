@@ -20,7 +20,7 @@ class RepoItemFragment : MvpAppCompatFragment(), RepoDetailsView, BackButtonList
     val presenter: RepoItemPresenter by moxyPresenter {
         val repo = arguments?.getParcelable(REPO) as UserRepos?
         RepoItemPresenter(repo!!).apply {
-            App.instance.appComponent.inject(this)
+            App.instance.repoSubcomponent?.inject(this)
         }
     }
 
