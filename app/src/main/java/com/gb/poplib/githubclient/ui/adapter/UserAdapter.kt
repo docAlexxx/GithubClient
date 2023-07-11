@@ -48,6 +48,8 @@ class UserAdapter(val presenter: UserListPresenter) :
         }
 
 
+
+
     }
 
 

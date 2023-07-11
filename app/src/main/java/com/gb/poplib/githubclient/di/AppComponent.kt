@@ -8,6 +8,8 @@ import com.gb.poplib.githubclient.di.modules.GlideModule
 import com.gb.poplib.githubclient.di.user.UserSubcomponent
 import com.gb.poplib.githubclient.mvp.presenter.MainPresenter
 import com.gb.poplib.githubclient.ui.activity.MainActivity
+import com.gb.poplib.githubclient.ui.adapter.FollowerAdapter
+import com.gb.poplib.githubclient.ui.fragment.FollowerFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -26,6 +28,8 @@ interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
+
+
 
 
 }

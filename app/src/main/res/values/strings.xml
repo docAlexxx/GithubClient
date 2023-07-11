@@ -12,4 +12,10 @@
     <string name="forks_qty">forks qty -</string>
     <string name="watchers_qty">watchers qty -</string>
     <string name="empty_text">empty</string>
+    <string name="follower_name">Follower name</string>
+    <string name="follover_name">Name:</string>
+    <string name="follower_id">ID:</string>
+    <string name="follower_id_text">(id)</string>
+    <string name="repos_text">repos</string>
+    <string name="followers_text">followers</string>
 </resources>

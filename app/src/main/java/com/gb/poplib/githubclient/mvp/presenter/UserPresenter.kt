@@ -2,6 +2,7 @@ package com.gb.poplib.githubclient.mvp.presenter
 
 import com.gb.poplib.githubclient.di.user.Modules.IUserScopeContainer
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
+import com.gb.poplib.githubclient.mvp.model.entity.room.Database
 import com.gb.poplib.githubclient.mvp.model.repo.IGithubUsersRepo
 import com.gb.poplib.githubclient.mvp.presenter.list.UserListPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
@@ -27,6 +28,8 @@ class UserPresenter() :
     lateinit var uiScheduler: Scheduler
     @Inject
     lateinit var userScopeContainer: IUserScopeContainer
+    @Inject
+    lateinit var database: Database
 
     class UsersListPresenter : UserListPresenter {
         val users = mutableListOf<GithubUser>()
@@ -54,8 +57,11 @@ class UserPresenter() :
         loadData()
         usersListPresenter.itemClickListener = { itemView ->
             val user = usersListPresenter.users[itemView.index]
-            router.navigateTo(screens.userItem(user))
+            router.navigateTo(screens.followers(user))
+        //userItem(user))
         }
+
+
     }
 
     fun loadData() {
