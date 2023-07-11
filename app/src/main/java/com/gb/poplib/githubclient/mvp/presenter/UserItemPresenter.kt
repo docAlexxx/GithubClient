@@ -23,14 +23,19 @@ class UserItemPresenter(
 
     @Inject
     lateinit var router: Router
+
     @Inject
     lateinit var screens: Screens
+
     @Inject
     lateinit var uiScheduler: Scheduler
+
     @Inject
     lateinit var usersRepo: IGithubRepositoriesRepo
+
     @Inject
     lateinit var database: Database
+
     @Inject
     lateinit var repoScopeContainer: IRepoScopeContainer
 
@@ -45,7 +50,6 @@ class UserItemPresenter(
             repo.name.let {
                 view.setRepoName(it)
             }
-
         }
 
         override fun getCount() = repos.size

@@ -17,16 +17,25 @@ class UserAdapter(val presenter: UserListPresenter) :
     @Inject
     lateinit var imageLoader: IImageLoader<ImageView>
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        UserViewHolder(
-            UserItemBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
-        ).apply {
-            itemView.setOnClickListener { presenter.itemClickListener?.invoke(this) }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
+
+        val vb = UserItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+
+        val viewHolder = UserViewHolder(vb)
+
+        vb.reposTv.setOnClickListener {
+            presenter.showRepos(viewHolder)
         }
+
+        vb.followersTv.setOnClickListener {
+            presenter.showFollowers(viewHolder)
+        }
+        return viewHolder
+    }
 
     override fun getItemCount() = presenter.getCount()
 
@@ -46,11 +55,6 @@ class UserAdapter(val presenter: UserListPresenter) :
         override fun loadAvatar(url: String) {
             imageLoader.loadInto(url, vb.avatarIv)
         }
-
-
-
-
     }
-
 
 }

@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/follower_avatar_iv"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="@dimen/foolower_iv_size"
+        android:layout_height="@dimen/foolower_iv_size"
         android:layout_gravity="center"
         android:layout_margin="16dp"
         app:srcCompat="@android:drawable/ic_menu_gallery" />

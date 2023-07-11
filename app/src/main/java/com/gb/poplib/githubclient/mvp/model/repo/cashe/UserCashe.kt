@@ -15,7 +15,7 @@ class UserCashe(private val db: Database) : IUserCashe {
                 user.login,
                 user.avatarUrl ?: "",
                 user.reposUrl ?: "",
-             user.followersUrl ?: ""
+                user.followersUrl ?: ""
             )
 
         }
@@ -29,7 +29,7 @@ class UserCashe(private val db: Database) : IUserCashe {
                 roomUser.login,
                 roomUser.avatarUrl,
                 roomUser.reposUrl,
-               roomUser.followersUrl
+                roomUser.followersUrl
             )
         }
     }.subscribeOn(Schedulers.io())

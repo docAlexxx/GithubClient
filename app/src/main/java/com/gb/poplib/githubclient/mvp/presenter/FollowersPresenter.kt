@@ -1,19 +1,13 @@
 package com.gb.poplib.githubclient.mvp.presenter
 
 import com.gb.poplib.githubclient.di.follower.modules.IFollowerScopeContainer
-import com.gb.poplib.githubclient.di.repo.modules.IRepoScopeContainer
 import com.gb.poplib.githubclient.mvp.model.entity.Follower
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
-import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
 import com.gb.poplib.githubclient.mvp.model.repo.IFollowersRepo
-import com.gb.poplib.githubclient.mvp.model.repo.IGithubRepositoriesRepo
 import com.gb.poplib.githubclient.mvp.presenter.list.FollowerListPresenter
-import com.gb.poplib.githubclient.mvp.presenter.list.RepoListPresenter
 import com.gb.poplib.githubclient.mvp.view.FollowersView
-import com.gb.poplib.githubclient.mvp.view.RepoView
 import com.gb.poplib.githubclient.mvp.view.list.FollowerItemView
-import com.gb.poplib.githubclient.mvp.view.list.RepoItemView
 import com.gb.poplib.githubclient.navigation.Screens
 import com.github.terrakok.cicerone.Router
 import io.reactivex.rxjava3.core.Scheduler
@@ -21,7 +15,7 @@ import io.reactivex.rxjava3.disposables.Disposable
 import moxy.MvpPresenter
 import javax.inject.Inject
 
-class FollowersPresenter(val user: GithubUser):
+class FollowersPresenter(val user: GithubUser) :
     MvpPresenter<FollowersView>() {
     private var disposable: Disposable? = null
 
@@ -68,8 +62,8 @@ class FollowersPresenter(val user: GithubUser):
     }
 
     fun loadData() {
-     disposable = user.followersUrl?.let {
-                   followersRepo.getFollowers(user)
+        disposable = user.followersUrl?.let {
+            followersRepo.getFollowers(user)
                 .observeOn(uiScheduler)
                 .subscribe({ followers ->
                     followersListPresenter.followers.clear()

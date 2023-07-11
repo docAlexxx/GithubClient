@@ -2,7 +2,6 @@ package com.gb.poplib.githubclient.mvp.model.repo.cashe
 
 import com.gb.poplib.githubclient.mvp.model.entity.Follower
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
-import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
 import com.gb.poplib.githubclient.mvp.model.entity.room.RoomFollower
 import io.reactivex.rxjava3.core.Completable
@@ -22,7 +21,7 @@ class FollowerCashe(val db: Database) : IFollowerCashe {
                     it.login ?: "",
                     it.avatarUrl ?: "",
                     roomUser.id
-                                   )
+                )
             }
 
             db.followerDao.insert(roomFollowers)
