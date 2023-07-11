@@ -5,13 +5,11 @@ import com.gb.poplib.githubclient.di.modules.AppModule
 import com.gb.poplib.githubclient.di.modules.CacheModule
 import com.gb.poplib.githubclient.di.modules.CiceroneModule
 import com.gb.poplib.githubclient.di.modules.GlideModule
-import com.gb.poplib.githubclient.di.modules.RepoModule
+import com.gb.poplib.githubclient.di.user.UserSubcomponent
 import com.gb.poplib.githubclient.mvp.presenter.MainPresenter
-import com.gb.poplib.githubclient.mvp.presenter.RepoItemPresenter
-import com.gb.poplib.githubclient.mvp.presenter.UserItemPresenter
-import com.gb.poplib.githubclient.mvp.presenter.UserPresenter
 import com.gb.poplib.githubclient.ui.activity.MainActivity
-import com.gb.poplib.githubclient.ui.adapter.UserAdapter
+import com.gb.poplib.githubclient.ui.adapter.FollowerAdapter
+import com.gb.poplib.githubclient.ui.fragment.FollowerFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -22,17 +20,16 @@ import javax.inject.Singleton
         AppModule::class,
         CacheModule::class,
         CiceroneModule::class,
-        RepoModule::class,
         GlideModule::class
     ]
 )
 interface AppComponent {
+    fun userSubcomponent(): UserSubcomponent
+
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(userPresenter: UserPresenter)
 
-    fun inject(userItemPresenter: UserItemPresenter)
-    fun inject(repoItemPresenter: RepoItemPresenter)
-    fun inject(userAdapter: UserAdapter)
+
+
 
 }

@@ -1,5 +1,6 @@
 package com.gb.poplib.githubclient.mvp.presenter
 
+import com.gb.poplib.githubclient.di.repo.modules.IRepoScopeContainer
 import com.gb.poplib.githubclient.mvp.model.entity.GithubUser
 import com.gb.poplib.githubclient.mvp.model.entity.UserRepos
 import com.gb.poplib.githubclient.mvp.model.entity.room.Database
@@ -22,14 +23,21 @@ class UserItemPresenter(
 
     @Inject
     lateinit var router: Router
+
     @Inject
     lateinit var screens: Screens
+
     @Inject
     lateinit var uiScheduler: Scheduler
+
     @Inject
     lateinit var usersRepo: IGithubRepositoriesRepo
+
     @Inject
     lateinit var database: Database
+
+    @Inject
+    lateinit var repoScopeContainer: IRepoScopeContainer
 
 
     class ReposListPresenter : RepoListPresenter {
@@ -42,7 +50,6 @@ class UserItemPresenter(
             repo.name.let {
                 view.setRepoName(it)
             }
-
         }
 
         override fun getCount() = repos.size
@@ -82,6 +89,7 @@ class UserItemPresenter(
     }
 
     override fun onDestroy() {
+        repoScopeContainer.releaseRepoScope()
         super.onDestroy()
         disposable?.dispose()
     }

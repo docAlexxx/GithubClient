@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gb.poplib.githubclient.App
 import com.gb.poplib.githubclient.databinding.FragmentUsersListBinding
+import com.gb.poplib.githubclient.di.user.UserSubcomponent
 import com.gb.poplib.githubclient.mvp.presenter.UserPresenter
 import com.gb.poplib.githubclient.mvp.view.UserView
 import com.gb.poplib.githubclient.ui.activity.BackButtonListener
@@ -19,12 +20,13 @@ class UsersListFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
         get() = _binding!!
 
     var adapter: UserAdapter? = null
+    var userSubcomponent: UserSubcomponent? = null
 
     val presenter: UserPresenter by moxyPresenter {
         UserPresenter().apply {
-            App.instance.appComponent.inject(this)
+            userSubcomponent = App.instance.initUserSubcomponent()
+            userSubcomponent?.inject(this)
         }
-
     }
 
     companion object {
@@ -48,7 +50,7 @@ class UsersListFragment : MvpAppCompatFragment(), UserView, BackButtonListener {
     override fun init() {
         binding.usersRv?.layoutManager = LinearLayoutManager(context)
         adapter =
-            UserAdapter(presenter.usersListPresenter).apply { App.instance.appComponent.inject(this) }
+            UserAdapter(presenter.usersListPresenter).apply { userSubcomponent?.inject(this) }
         binding.usersRv?.adapter = adapter
     }
 

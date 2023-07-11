@@ -7,4 +7,9 @@
     <dimen name="repo_details_text_size">30sp</dimen>
     <dimen name="repo_details_padding">10dp</dimen>
     <dimen name="user_name_text_size">40sp</dimen>
+    <dimen name="foolower_iv_size">200dp</dimen>
+    <dimen name="user_buttons_tv_size">15sp</dimen>
+    <dimen name="user_iv_size">50dp</dimen>
+    <dimen name="margin">10dp</dimen>
+    <dimen name="user_name_text">30sp</dimen>
 </resources>
